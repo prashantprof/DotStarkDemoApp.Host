@@ -12,6 +12,8 @@ namespace DotStarkDemoApp.Services.Abstract
 
         ProductModel GetProductByProductId(string productId);
 
+        ProductModel CheckProductAvailability(string productId, int quntityRequired);
+
         IEnumerable<ProductModel> GetAllProducts();
 
         int AddProduct(ProductModel productEntity);

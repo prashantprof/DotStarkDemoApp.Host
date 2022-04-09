@@ -10,15 +10,6 @@ namespace DotStarkDemoApp.Host.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProductServices productService = null;
-
-        public HomeController() : this(new ProductServices()) { }
-
-        public HomeController(IProductServices productService)
-        {
-            this.productService = productService;
-        }
-
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";

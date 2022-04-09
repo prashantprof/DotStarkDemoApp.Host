@@ -3,6 +3,7 @@ using DotStarkDemoApp.Models;
 using DotStarkDemoApp.Repository.DatabaseEntities;
 using DotStarkDemoApp.Repository.UnitOfWork;
 using DotStarkDemoApp.Services.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
@@ -40,6 +41,24 @@ namespace DotStarkDemoApp.Services.Concrete
                 unitOfWork.Save();
                 scope.Complete();
                 return product.Id;
+            }
+        }
+
+        public ProductModel CheckProductAvailability(string productId, int quntityRequired)
+        {
+            var product = unitOfWork.ProductRepository.GetWithInclude(
+                predicate: x => x.ProductID.ToLower().Equals(productId.ToLower()) && x.Quantity >= quntityRequired
+            ).FirstOrDefault();
+
+            if (product != null)
+            {
+                Mapper.CreateMap<Product, ProductModel>();
+                var productModel = Mapper.Map<Product, ProductModel>(product);
+                return productModel;
+            }
+            else
+            {
+                throw new Exception(string.Format("Product is not available for the required quanity: {0}.", quntityRequired));
             }
         }
 
@@ -118,7 +137,10 @@ namespace DotStarkDemoApp.Services.Concrete
                 var productModel = Mapper.Map<Product, ProductModel>(product);
                 return productModel;
             }
-            return null;
+            else
+            {
+                throw new Exception("Product is not available.");
+            }
         }
 
         /// <summary>
