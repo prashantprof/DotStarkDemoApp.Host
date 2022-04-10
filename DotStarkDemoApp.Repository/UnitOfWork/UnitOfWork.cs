@@ -15,10 +15,10 @@ namespace DotStarkDemoApp.Repository.UnitOfWork
     /// </summary>  
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DotStarkDbEntitiesContainer context = null;
+        private readonly DotStarkDemoDBEntities context = null;
         public UnitOfWork()
         {
-            context = new DotStarkDbEntitiesContainer();
+            context = new DotStarkDemoDBEntities();
         }
 
         private IGenericRepository<Product> productRepository;

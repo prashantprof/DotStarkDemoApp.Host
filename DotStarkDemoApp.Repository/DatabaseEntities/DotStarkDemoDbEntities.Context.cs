@@ -13,10 +13,10 @@ namespace DotStarkDemoApp.Repository.DatabaseEntities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DotStarkDbEntitiesContainer : DbContext
+    public partial class DotStarkDemoDBEntities : DbContext
     {
-        public DotStarkDbEntitiesContainer()
-            : base("name=DotStarkDbEntitiesContainer")
+        public DotStarkDemoDBEntities()
+            : base("name=DotStarkDemoDBEntities")
         {
         }
     

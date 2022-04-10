@@ -13,10 +13,10 @@ namespace DotStarkDemoApp.Repository.GenericRepository
     /// <typeparam name="TEntity"></typeparam>  
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        internal DotStarkDbEntitiesContainer Context;
+        internal DotStarkDemoDBEntities Context;
         internal DbSet<TEntity> DbSet;
 
-        public GenericRepository(DotStarkDbEntitiesContainer context)
+        public GenericRepository(DotStarkDemoDBEntities context)
         {
             Context = context;
             DbSet = context.Set<TEntity>();
