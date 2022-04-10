@@ -24,18 +24,17 @@ namespace DotStarkDemoApp.Services.Concrete
             this.unitOfWork = unitOfWork;
         }
 
-        /// <summary>
-        /// Add a new product record.
-        /// </summary>
-        /// <param name="productEntity"></param>
-        /// <returns></returns>
-        public int AddProduct(ProductModel productEntity)
+        public int AddProduct(NewProductModel productEntity)
         {
             using (var scope = new TransactionScope())
             {
                 var product = new Product
                 {
-                    ProductName = productEntity.ProductName
+                    Id = 0,
+                    ProductID = productEntity.ProductID,
+                    ProductName = productEntity.ProductName,
+                    Quantity = productEntity.Quantity,
+                    DateCreated = DateTime.Now
                 };
                 unitOfWork.ProductRepository.Insert(product);
                 unitOfWork.Save();
@@ -62,11 +61,6 @@ namespace DotStarkDemoApp.Services.Concrete
             }
         }
 
-        /// <summary>
-        /// Delete an existing product
-        /// </summary>
-        /// <param name="productId"></param>
-        /// <returns></returns>
         public bool DeleteProduct(int productId)
         {
             var success = false;
@@ -87,10 +81,6 @@ namespace DotStarkDemoApp.Services.Concrete
             return success;
         }
 
-        /// <summary>
-        /// Get all product list.
-        /// </summary>
-        /// <returns></returns>
         public IEnumerable<ProductModel> GetAllProducts()
         {
             var products = unitOfWork.ProductRepository.GetAll().ToList();
@@ -103,11 +93,6 @@ namespace DotStarkDemoApp.Services.Concrete
             return null;
         }
 
-        /// <summary>
-        /// Get a product by id.
-        /// </summary>
-        /// <param name="productId"></param>
-        /// <returns></returns>
         public ProductModel GetProductById(int productId)
         {
             var product = unitOfWork.ProductRepository.GetByID(productId);
@@ -120,11 +105,6 @@ namespace DotStarkDemoApp.Services.Concrete
             return null;
         }
 
-        /// <summary>
-        /// Get a product by product SKU ID.
-        /// </summary>
-        /// <param name="productId"></param>
-        /// <returns></returns>
         public ProductModel GetProductByProductId(string productId)
         {
             var product = unitOfWork.ProductRepository.GetWithInclude(
@@ -143,12 +123,6 @@ namespace DotStarkDemoApp.Services.Concrete
             }
         }
 
-        /// <summary>
-        /// Update a product details.
-        /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="productEntity"></param>
-        /// <returns></returns>
         public bool UpdateProduct(int productId, ProductModel productEntity)
         {
             var success = false;
@@ -161,6 +135,7 @@ namespace DotStarkDemoApp.Services.Concrete
                     {
                         product.ProductName = productEntity.ProductName;
                         product.Quantity = productEntity.Quantity;
+                        product.DateUpdate = DateTime.Now;
 
                         unitOfWork.ProductRepository.Update(product);
                         unitOfWork.Save();

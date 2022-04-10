@@ -1,6 +1,7 @@
 ﻿using DotStarkDemoApp.Models;
 using DotStarkDemoApp.Services.Abstract;
 using DotStarkDemoApp.Services.Concrete;
+using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -56,6 +57,77 @@ namespace DotStarkDemoApp.Host.Controllers.Api
             return Ok(productService.CheckProductAvailability(productId, quntityRequired));
         }
 
+        /// <summary>
+        /// Add a new product.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("add-new-product")]
+        [ResponseType(typeof(ServiceResponseModel))]
+        public IHttpActionResult AddNewProduct(NewProductModel product)
+        {
+            int newProductId = productService.AddProduct(product);
+            if (newProductId > 0)
+            {
+                return Ok(new ServiceResponseModel()
+                {
+                    IsSuccessStatusCode = true,
+                    Message = "New Product has been added successfully.",
+                    StatusCode = HttpStatusCode.OK,
+                    Data = newProductId
+                });
+            }
+            else
+            {
+                return Ok(new ServiceResponseModel()
+                {
+                    IsSuccessStatusCode = false,
+                    Message = "New Product cannot be added this time, Please try again!",
+                    StatusCode = HttpStatusCode.OK,
+                    ReasonPhrase = "Server error"
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// Add a new product.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("update-product-stock")]
+        [ResponseType(typeof(ServiceResponseModel))]
+        public IHttpActionResult UpdateProductStock(int productId, int quantity)
+        {
+            var existingProduct = productService.GetProductById(productId);
+
+            if (existingProduct != null)
+            {
+                existingProduct.Quantity += quantity;
+
+                if (productService.UpdateProduct(productId, existingProduct))
+                {
+                    return Ok(new ServiceResponseModel()
+                    {
+                        IsSuccessStatusCode = true,
+                        Message = "Product stock has been updated successfully.",
+                        StatusCode = HttpStatusCode.OK,
+                        Data = existingProduct
+                    });
+                }
+            }
+
+            return Ok(new ServiceResponseModel()
+            {
+                IsSuccessStatusCode = false,
+                Message = string.Format("Product is not available with the Id: {0}", productId),
+                StatusCode = HttpStatusCode.BadRequest,
+                ReasonPhrase = "Bad Request"
+            });
+
+        }
 
 
         #endregion

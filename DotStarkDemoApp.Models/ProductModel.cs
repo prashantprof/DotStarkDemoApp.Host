@@ -20,4 +20,13 @@ namespace DotStarkDemoApp.Models
         [IgnoreDataMember]
         public DateTime? DateUpdate { get; set; }
     }
+
+    public class NewProductModel
+    {
+        public string ProductID { get; set; }
+
+        public string ProductName { get; set; }
+
+        public int Quantity { get; set; }
+    }
 }
