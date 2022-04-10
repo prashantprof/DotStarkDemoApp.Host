@@ -39,12 +39,6 @@ namespace DotStarkDemoApp.Repository.GenericRepository
             DbSet.Remove(entityToDelete);
         }
 
-        public virtual IEnumerable<TEntity> Get()
-        {
-            IQueryable<TEntity> query = DbSet;
-            return query.ToList();
-        }
-
         public virtual IEnumerable<TEntity> GetAll()
         {
             return DbSet.ToList();
@@ -57,7 +51,7 @@ namespace DotStarkDemoApp.Repository.GenericRepository
 
         public IEnumerable<TEntity> GetWithInclude(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = this.DbSet;
+            IQueryable<TEntity> query = DbSet;
 
             foreach (Expression<Func<TEntity, object>> include in includes)
                 query = query.Include(include);

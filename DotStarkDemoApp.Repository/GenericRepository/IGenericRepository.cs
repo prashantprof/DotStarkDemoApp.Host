@@ -6,8 +6,6 @@ namespace DotStarkDemoApp.Repository.GenericRepository
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        IEnumerable<TEntity> Get();
-
         IEnumerable<TEntity> GetAll();
 
         TEntity GetByID(object id);
